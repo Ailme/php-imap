@@ -631,7 +631,13 @@ class Mailbox
                 ];
                 $fileSysName = preg_replace('~[\\\\/]~', '',
                     $mail->id . '_' . $attachmentId . '_' . preg_replace(array_keys($replace), $replace, $fileName));
+                $info = pathinfo($fileName);
                 $fileSysName = md5($fileSysName);
+
+                if (!empty($info['extension'])) {
+                    $fileSysName .= "." . strtolower($info['extension']);
+                }
+                
                 $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
                 file_put_contents($attachment->filePath, $data);
             }
