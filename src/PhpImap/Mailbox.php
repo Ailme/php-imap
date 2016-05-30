@@ -611,6 +611,9 @@ class Mailbox
             : (isset($params['filename']) || isset($params['name']) ? mt_rand() . mt_rand() : null);
 
         if ($attachmentId) {
+            $attachmentId = $this->decodeMimeStr($attachmentId, $this->serverEncoding);
+            $attachmentId = $this->decodeRFC2231($attachmentId, $this->serverEncoding);
+            
             if (empty($params['filename']) && empty($params['name'])) {
                 $fileName = $attachmentId . '.' . strtolower($partStructure->subtype);
             } else {
@@ -637,7 +640,7 @@ class Mailbox
                 if (!empty($info['extension'])) {
                     $fileSysName .= "." . strtolower($info['extension']);
                 }
-                
+
                 $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
                 file_put_contents($attachment->filePath, $data);
             }
