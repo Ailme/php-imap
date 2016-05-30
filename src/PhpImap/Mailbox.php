@@ -195,6 +195,9 @@ class Mailbox
     /**
      * Save mail body.
      *
+     * @param        $mailId
+     * @param string $filename
+     *
      * @return bool
      */
     public function saveMail($mailId, $filename = 'email.eml')
@@ -204,6 +207,8 @@ class Mailbox
 
     /**
      * Marks mails listed in mailId for deletion.
+     *
+     * @param $mailId
      *
      * @return bool
      */
@@ -215,6 +220,9 @@ class Mailbox
     /**
      * Moves mails listed in mailId into new mailbox
      *
+     * @param $mailId
+     * @param $mailBox
+     *
      * @return bool
      */
     public function moveMail($mailId, $mailBox)
@@ -224,6 +232,9 @@ class Mailbox
 
     /**
      * Copys mails listed in mailId into new mailbox
+     *
+     * @param $mailId
+     * @param $mailBox
      *
      * @return bool
      */
@@ -245,6 +256,8 @@ class Mailbox
     /**
      * Add the flag \Seen to a mail.
      *
+     * @param $mailId
+     *
      * @return bool
      */
     public function markMailAsRead($mailId)
@@ -254,6 +267,8 @@ class Mailbox
 
     /**
      * Remove the flag \Seen from a mail.
+     *
+     * @param $mailId
      *
      * @return bool
      */
@@ -265,6 +280,8 @@ class Mailbox
     /**
      * Add the flag \Flagged to a mail.
      *
+     * @param $mailId
+     *
      * @return bool
      */
     public function markMailAsImportant($mailId)
@@ -274,6 +291,8 @@ class Mailbox
 
     /**
      * Add the flag \Seen to a mails.
+     *
+     * @param array $mailId
      *
      * @return bool
      */
@@ -285,6 +304,8 @@ class Mailbox
     /**
      * Remove the flag \Seen from some mails.
      *
+     * @param array $mailId
+     *
      * @return bool
      */
     public function markMailsAsUnread(array $mailId)
@@ -294,6 +315,8 @@ class Mailbox
 
     /**
      * Add the flag \Flagged to some mails.
+     *
+     * @param array $mailId
      *
      * @return bool
      */
@@ -608,6 +631,7 @@ class Mailbox
                 ];
                 $fileSysName = preg_replace('~[\\\\/]~', '',
                     $mail->id . '_' . $attachmentId . '_' . preg_replace(array_keys($replace), $replace, $fileName));
+                $fileSysName = md5($fileSysName);
                 $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
                 file_put_contents($attachment->filePath, $data);
             }
