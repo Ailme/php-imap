@@ -502,11 +502,16 @@ class Mailbox
      * @param      $mailId
      * @param bool $markAsSeen
      *
-     * @return IncomingMail
+     * @return \PhpImap\IncomingMail
+     * @throws \PhpImap\Exception
      */
     public function getMail($mailId, $markAsSeen = true)
     {
         $head = imap_rfc822_parse_headers(imap_fetchheader($this->getImapStream(), $mailId, FT_UID));
+
+        if (empty($head)) {
+            throw new Exception('Failed to process the mail');
+        }
 
         $mail = new IncomingMail();
         $mail->id = $mailId;
@@ -613,7 +618,7 @@ class Mailbox
         if ($attachmentId) {
             $attachmentId = $this->decodeMimeStr($attachmentId, $this->serverEncoding);
             $attachmentId = $this->decodeRFC2231($attachmentId, $this->serverEncoding);
-            
+
             if (empty($params['filename']) && empty($params['name'])) {
                 $fileName = $attachmentId . '.' . strtolower($partStructure->subtype);
             } else {
