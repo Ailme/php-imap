@@ -648,6 +648,10 @@ class Mailbox
 
                 $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
                 file_put_contents($attachment->filePath, $data);
+
+                if (!is_file($attachment->filePath)) {
+                    throw new Exception('Failed to write the file');
+                }
             }
             $mail->addAttachment($attachment);
         } else {
