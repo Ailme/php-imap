@@ -8,7 +8,6 @@ use stdClass;
  */
 class Mailbox
 {
-
     protected $imapPath;
     protected $imapLogin;
     protected $imapPassword;
@@ -509,7 +508,7 @@ class Mailbox
     {
         $head = imap_rfc822_parse_headers(imap_fetchheader($this->getImapStream(), $mailId, FT_UID));
 
-        if (empty($head)) {
+        if (empty($head) || empty($head->from[0])) {
             throw new Exception('Failed to process the mail');
         }
 
@@ -571,6 +570,8 @@ class Mailbox
      * @param                       $partStructure
      * @param                       $partNum
      * @param bool                  $markAsSeen
+     *
+     * @throws \PhpImap\Exception
      */
     protected function initMailPart(IncomingMail $mail, $partStructure, $partNum, $markAsSeen = true)
     {
