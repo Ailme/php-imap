@@ -582,6 +582,10 @@ class Mailbox
         $data = $partNum ? imap_fetchbody($this->getImapStream(), $mail->id, $partNum,
             $options) : imap_body($this->getImapStream(), $mail->id, $options);
 
+        if (!isset($partStructure->encoding)) {
+            throw new Exception("Error in part Structure");
+        }
+
         if ($partStructure->encoding == 1) {
             $data = imap_utf8($data);
         } elseif ($partStructure->encoding == 2) {
