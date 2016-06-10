@@ -49,7 +49,7 @@ class Mailbox
      * @param int   $retriesNum
      * @param array $params
      */
-    public function setConnectionArgs($options = 0, $retriesNum = 0, array $params = null)
+    public function setConnectionArgs($options = 0, $retriesNum = 0, array $params = [])
     {
         $this->imapOptions = $options;
         $this->imapRetriesNum = $retriesNum;
